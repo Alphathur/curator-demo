@@ -16,27 +16,28 @@ public class WatcherApp {
     watchChildNode();
   }
 
-  private static void watchNodeChange() throws Exception{
+  private static void watchNodeChange() throws Exception {
     NodeCache nodeCache = new NodeCache(curatorFramework, "/app1/node2");
     nodeCache.start(true);
     nodeCache.getListenable().addListener(new NodeCacheListener() {
       @Override
       public void nodeChanged() throws Exception {
-        System.out.println("node has changed, current node is " + new String(nodeCache.getCurrentData().getData()));
+        System.out.println("node has changed, current node is " + new String(
+            nodeCache.getCurrentData().getData()));
       }
     });
 
     System.in.read();
   }
 
-  private static void watchChildNode() throws Exception{
+  private static void watchChildNode() throws Exception {
     PathChildrenCache pathChildrenCache = new PathChildrenCache(curatorFramework, "/app1", true);
     pathChildrenCache.start(StartMode.POST_INITIALIZED_EVENT);
     pathChildrenCache.getListenable().addListener(new PathChildrenCacheListener() {
       @Override
       public void childEvent(CuratorFramework client, PathChildrenCacheEvent event)
           throws Exception {
-        System.out.println(event+ ", "+new String(event.getData().getData()));
+        System.out.println(event + ", " + new String(event.getData().getData()));
       }
     });
 

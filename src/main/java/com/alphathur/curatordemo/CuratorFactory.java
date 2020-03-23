@@ -5,6 +5,7 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
 public class CuratorFactory {
+
   private static final String CONNECTION_STR = "127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183";
 
   private static CuratorFramework curatorFramework = null;
