@@ -7,13 +7,18 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache.StartMode;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
+import org.apache.curator.framework.recipes.cache.TreeCache;
+import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
+import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 
 public class WatcherApp {
 
   private static CuratorFramework curatorFramework = CuratorFactory.getCuratorFramework();
 
   public static void main(String[] args) throws Exception {
-    watchChildNode();
+//    watchChildNode();
+//    watchNodeChange();
+    watchTreeCache();
   }
 
   private static void watchNodeChange() throws Exception {
@@ -36,6 +41,21 @@ public class WatcherApp {
     pathChildrenCache.getListenable().addListener(new PathChildrenCacheListener() {
       @Override
       public void childEvent(CuratorFramework client, PathChildrenCacheEvent event)
+          throws Exception {
+        System.out.println(event + ", " + new String(event.getData().getData()));
+      }
+    });
+
+    System.in.read();
+  }
+
+
+  private static void watchTreeCache() throws Exception  {
+    TreeCache cache = new TreeCache(curatorFramework, "/app1");
+    cache.start();
+    cache.getListenable().addListener(new TreeCacheListener(){
+      @Override
+      public void childEvent(CuratorFramework client, TreeCacheEvent event)
           throws Exception {
         System.out.println(event + ", " + new String(event.getData().getData()));
       }
